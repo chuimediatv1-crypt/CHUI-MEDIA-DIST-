@@ -1,180 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHUI MEDIA</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #0d1117;
-    color: white;
-}
-
-header {
-    padding: 15px;
-    text-align: center;
-    background: #161b22;
-    font-size: 20px;
-}
-
-.search {
-    padding: 10px;
-    width: 90%;
-    margin: 10px;
-    border-radius: 10px;
-    border: none;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 10px;
-}
-
-.card {
-    background: #161b22;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.card img {
-    width: 100%;
-}
-
-.card p {
-    padding: 10px;
-}
-
-.player {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #161b22;
-    padding: 10px;
-}
-
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-button {
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    background: #1f6feb;
-    color: white;
-}
-
-.progress {
-    width: 100%;
-}
-</style>
+    <title>CHUI MEDIA</title>
 </head>
-
 <body>
-
-<header>🎵 CHUI MEDIA</header>
-
-<input type="text" class="search" placeholder="Search song..." onkeyup="searchSong(this.value)">
-
-<div class="container" id="songs"></div>
-
-<div class="player">
-    <div id="title">No song</div>
-    <input type="range" id="progress" class="progress">
-    <div class="controls">
-        <button onclick="prev()">⏮️</button>
-        <button onclick="play()">▶️</button>
-        <button onclick="pause()">⏸️</button>
-        <button onclick="next()">⏭️</button>
+    <h1>Welcome to CHUI MEDIA</h1>
+    <div>
+        <h2>Login/Signup System</h2>
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <input type="submit" value="Login">
+        </form>
+        <p>Don't have an account? <a href="#">Signup here!</a></p>
     </div>
-</div>
-
-<audio id="audio"></audio>
-
-<script>
-let songs = [
-{
-title: "Sample Beat",
-src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-img: "https://picsum.photos/200?1"
-},
-{
-title: "Chill Music",
-src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-img: "https://picsum.photos/200?2"
-},
-{
-title: "Afro Beat",
-src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-img: "https://picsum.photos/200?3"
-}
-];
-
-let current = 0;
-let audio = document.getElementById("audio");
-let title = document.getElementById("title");
-let progress = document.getElementById("progress");
-let container = document.getElementById("songs");
-
-function showSongs(list) {
-container.innerHTML = "";
-list.forEach((song, index) => {
-let card = document.createElement("div");
-card.className = "card";
-card.innerHTML = `<img src="${song.img}"><p>${song.title}</p>`;
-card.onclick = () => {
-current = index;
-loadSong();
-play();
-};
-container.appendChild(card);
-});
-}
-
-function loadSong() {
- audio.src = songs[current].src;
-title.innerText = "Playing: " + songs[current].title;
-}
-
-function play(){audio.play();}
-function pause(){audio.pause();}
-
-function next(){
-current = (current + 1) % songs.length;
-loadSong();
-play();
-}
-
-function prev(){
-current = (current - 1 + songs.length) % songs.length;
-loadSong();
-play();
-}
-
-audio.ontimeupdate = () => {
-progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-};
-
-progress.oninput = () => {
-audio.currentTime = (progress.value / 100) * audio.duration;
-};
-
-function searchSong(q){
-let filtered = songs.filter(s => s.title.toLowerCase().includes(q.toLowerCase()));
-showSongs(filtered);
-}
-
-loadSong();
-showSongs(songs);
-</script>
-
+    <div>
+        <h2>Favorites Feature</h2>
+        <p>Users can add movies and shows to their favorites list.</p>
+    </div>
 </body>
 </html>
