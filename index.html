@@ -1,24 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CHUI MEDIA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHUI MEDIA</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#0d1117;color:white}
+header{text-align:center;padding:10px;background:#161b22}
+.container{padding:10px}
+.card{background:#161b22;margin:10px 0;padding:10px;border-radius:10px}
+button{padding:8px;margin:5px;border:none;border-radius:5px;background:#1f6feb;color:white}
+input{padding:8px;margin:5px;width:90%}
+.player{position:fixed;bottom:0;width:100%;background:#161b22;padding:10px}
+</style>
 </head>
+
 <body>
-    <h1>Welcome to CHUI MEDIA</h1>
-    <div>
-        <h2>Login/Signup System</h2>
-        <form>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
-            <input type="submit" value="Login">
-        </form>
-        <p>Don't have an account? <a href="#">Signup here!</a></p>
-    </div>
-    <div>
-        <h2>Favorites Feature</h2>
-        <p>Users can add movies and shows to their favorites list.</p>
-    </div>
+
+<header>🎵 CHUI MEDIA</header>
+
+<div id="auth" class="container">
+<h3>Login / Signup</h3>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<br>
+<button onclick="signup()">Signup</button>
+<button onclick="login()">Login</button>
+</div>
+
+<div id="app" class="container" style="display:none"></div>
+
+<div class="player">
+<div id="title">No song</div>
+<button onclick="play()">▶️</button>
+<button onclick="pause()">⏸️</button>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+let songs=[
+{title:"Song 1",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"},
+{title:"Song 2",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"}
+];
+
+let audio=document.getElementById("audio");
+let title=document.getElementById("title");
+let app=document.getElementById("app");
+
+function signup(){
+let u=user.value,p=pass.value;
+localStorage.setItem(u,p);
+alert("Account created");
+}
+
+function login(){
+let u=user.value,p=pass.value;
+if(localStorage.getItem(u)==p){
+document.getElementById("auth").style.display="none";
+app.style.display="block";
+loadApp();
+}else alert("Wrong login");
+}
+
+function loadApp(){
+songs.forEach((s,i)=>{
+let div=document.createElement("div");
+div.className="card";
+div.innerHTML=`
+<p>${s.title}</p>
+<button onclick="playSong(${i})">Play</button>
+<button onclick="fav(${i})">❤️</button>
+`;
+app.appendChild(div);
+});
+}
+
+function playSong(i){
+audio.src=songs[i].src;
+title.innerText=songs[i].title;
+audio.play();
+}
+
+function play(){audio.play()}
+function pause(){audio.pause()}
+
+function fav(i){
+let f=JSON.parse(localStorage.getItem("fav")||"[]");
+f.push(songs[i]);
+localStorage.setItem("fav",JSON.stringify(f));
+alert("Added to favorites");
+}
+</script>
+
 </body>
 </html>
